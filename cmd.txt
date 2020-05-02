@@ -1,12 +1,13 @@
 
-coté backend:
+cotï¿½ backend:
 
 npm init
 npm i express mongoose
 npm i -D nodemon
 npm i concurrently
+npm install jsonwebtoken
 /////////////////////////////////
-coté client:
+cotï¿½ client:
 
 npx create-react-app client
 npm i axios redux react-redux redux-thunk react-router-dom
