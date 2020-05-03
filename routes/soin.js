@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const Soin = require("../models/Soin");
 const { check, validationResult } = require("express-validator");
-const auth = require("../middleware/auth");
+const auth = require("../middleware/authChef");
 
 //private router
-router.get("/:patientId", auth, (req, res) => {
+router.get("/patient/:patientId", auth, (req, res) => {
   Soin.find({ patient: req.params.patientId })
     .sort({ date: -1 })
     .then((traitementSoin) => res.json(traitementSoin))
@@ -13,7 +13,7 @@ router.get("/:patientId", auth, (req, res) => {
 });
 
 router.post(
-  "/",
+  "/patient/:id",
   [
     auth,
     [
@@ -32,10 +32,18 @@ router.post(
     const newSoin = new Soin({
       dateSoin,
       traitementSoin,
-      personel: req.personel.id,
+      patient: req.params.id,
     });
-    newSoin
-      .save()
+
+    Patient.findById(req.params.id)
+      .then((patient) => {
+        soin.patient = patient;
+        newSoin.save();
+        patient
+          .save()
+          .then(() => res.json({ msg: "Test Covid Ajouter" }))
+          .catch((err) => console.error(err.message));
+      })
       .then((song) => res.json(song))
       .catch((err) => console.log(err.message));
   }
@@ -44,7 +52,7 @@ router.post(
 router.put("/:id", auth, (req, res) => {
   const { dateSoin, traitementSoin } = req.body;
   //build a soin object
-  let soinFilds = {};
+  let soinFilds = { dateSoin, traitementSoin };
   if (dateSoin) soinFilds.dateSoin = dateSoin;
   if (traitementSoin) soinFilds.traitementSoin = traitementSoin;
 
@@ -53,6 +61,7 @@ router.put("/:id", auth, (req, res) => {
       if (!soin) {
         return res.json({ msg: "traitement de soin introuvable" });
       } else if (soin.patient.toString() !== req.patient.id) {
+        //params
         res.json({ msg: "not autorized" });
       } else {
         Soin.findByIdAndUpdate(

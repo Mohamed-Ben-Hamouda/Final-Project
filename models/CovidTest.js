@@ -26,4 +26,4 @@ const CovidTestSchema = mongoose.Schema({
     default: Date.now,
   },
 });
-module.exports = mongoose.model("covidtest", CovidTestSchema);
+module.exports = mongoose.model("covidTest", CovidTestSchema);
