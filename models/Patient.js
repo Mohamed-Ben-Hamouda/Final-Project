@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const PatientSchema = mongoose.Schema({
-  personel: {
+  infermier: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "patient",
+    ref: "infermier",
   },
   soin: [
     {
@@ -29,6 +29,10 @@ const PatientSchema = mongoose.Schema({
       ref: "covidTest",
     },
   ],
+  cin: {
+    type: Number,
+    required: true,
+  },
   nom: {
     type: String,
     required: true,
@@ -39,7 +43,7 @@ const PatientSchema = mongoose.Schema({
   },
   dateEn: {
     type: Date,
-    default: Date.now,
+    required: true,
   },
   email: {
     type: String,

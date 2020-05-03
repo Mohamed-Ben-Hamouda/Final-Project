@@ -12,7 +12,7 @@ module.exports = function (req, res, next) {
     if (err) {
       res.json({ msg: "Token not valid" });
     }
-    req.personel = decoded.personel;
+    req.medecin = decoded.medecin;
     next();
   });
 };

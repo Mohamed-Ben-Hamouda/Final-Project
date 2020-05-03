@@ -1,34 +1,40 @@
 const mongoose = require("mongoose");
 
-const SuivieSchema = mongoose.Schema({
-  patient: {
+const ChefServiceSchema = mongoose.Schema({
+  medecin: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "patient",
+    ref: "medecin",
   },
-  infermier: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "infermier",
-  },
-  dateSuivie: {
+
+  nom: {
     type: String,
     required: true,
   },
-  temperature: {
+  prenom: {
     type: String,
     required: true,
   },
-  respiration: {
+  email: {
     type: String,
     required: true,
   },
-  pulsation: {
+  password: {
+    type: String,
+    required: true,
+  },
+  matricule: {
     type: String,
     required: true,
   },
 
+  phone: {
+    type: Number,
+    required: true,
+  },
   date: {
     type: Date,
     default: Date.now,
   },
 });
-module.exports = mongoose.model("suivie", SuivieSchema);
+
+module.exports = mongoose.model("chefService", ChefServiceSchema);

@@ -5,12 +5,12 @@ const PrescriptionSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "patient",
   },
-  personel: {
+  infermier: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "personel",
+    ref: "infermier",
   },
-  date: {
-    type: Date,
+  datePrescrition: {
+    type: String,
     required: true,
   },
   traitement: {
