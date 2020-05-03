@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const auth = require('../middleware/auth')
-const Personel = require('../models/Personel')
+const ChefServise = require('../models/ChefServise')
 
 const jwtSecret = "secret"
 
@@ -33,9 +33,9 @@ router.post('/', [
 
     const { matricule, password } = req.body
 
-    Personel.findOne({ matricule })
-        .then(personel => {
-            if (!personel) {
+    ChefServise.findOne({ matricule })
+        .then(chefServise => {
+            if (!chefServise) {
                 // Check is user exists
                 return res.status(400).json({ msg: "SVP faite votre enregistrement avant!!!!!" })
             } else {
@@ -46,7 +46,7 @@ router.post('/', [
                     } else if (isMatch) {
                         const payload = {
                             user: {
-                                id: personel.id
+                                id: chefServise.id
                             }
                         }
 

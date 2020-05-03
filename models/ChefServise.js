@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
-const PersonelSchema = mongoose.Schema({
+const ChefServiseSchema = mongoose.Schema({
   patient: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "patient",
+      ref: "patient"
     },
   ],
   nom: {
@@ -27,10 +27,7 @@ const PersonelSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  role: {
-    type: String,
-    required: true,
-  },
+
   phone: {
     type: Number,
     required: true,
@@ -41,4 +38,4 @@ const PersonelSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("personel", PersonelSchema);
+module.exports = mongoose.model("chefServise", ChefServiseSchema);

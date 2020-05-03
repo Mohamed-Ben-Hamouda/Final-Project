@@ -15,10 +15,13 @@ mongoose.connect(db, { useUnifiedTopology: true, useNewUrlParser: true }, (err) 
 
 
 // Define Routes
-app.use('/api/personel', require('./routes/personel'))
+app.use('/api/chefServise', require('./routes/chefServise'))
 app.use('/api/patient', require('./routes/patient'))
-app.use('/api/soin.js', require('./routes/soin'))
+// app.use('/api/soin', require('./routes/soin'))
+// app.use('/api/auth', require('./routes/auth'))
+// app.use('/api/covidTest', require('./routes/covidTest'))
+// app.use('/api/suivie', require('./routes/suivie'))
 
 
 
-app.listen(5000, () => console.log('Server démmarrer sur le port 5000...'))
+app.listen(4070, () => console.log('Server démmarrer sur le port 4070...'))

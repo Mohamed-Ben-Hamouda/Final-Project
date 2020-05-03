@@ -1,13 +1,14 @@
 
-cotï¿½ backend:
+coté backend:
 
 npm init
 npm i express mongoose
 npm i -D nodemon
 npm i concurrently
-npm install jsonwebtoken
+npm install --save express-validator
+npm install bcryptjs
 /////////////////////////////////
-cotï¿½ client:
+coté client:
 
 npx create-react-app client
 npm i axios redux react-redux redux-thunk react-router-dom
