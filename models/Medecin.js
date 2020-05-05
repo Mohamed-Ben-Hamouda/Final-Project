@@ -5,6 +5,7 @@ const MedecinSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "infermier",
   },
+
   nom: {
     type: String,
     required: true,

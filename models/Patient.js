@@ -7,26 +7,26 @@ const PatientSchema = mongoose.Schema({
   },
   soin: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "soin",
+      type: Object,
+      default: [],
     },
   ],
   prescription: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "prescription",
+      type: Object,
+      default: [],
     },
   ],
   suivie: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "suivie",
+      type: Object,
+      default: [],
     },
   ],
   covidTest: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "covidTest",
+      type: Object,
+      default: [],
     },
   ],
   cin: {
@@ -42,7 +42,7 @@ const PatientSchema = mongoose.Schema({
     required: true,
   },
   dateEn: {
-    type: Date,
+    type: String,
     required: true,
   },
   email: {
@@ -50,6 +50,10 @@ const PatientSchema = mongoose.Schema({
     required: true,
   },
   phone: {
+    type: String,
+    required: true,
+  },
+  cin: {
     type: String,
     required: true,
   },
@@ -66,7 +70,7 @@ const PatientSchema = mongoose.Schema({
     required: true,
   },
   etat: {
-    type: Boolean,
+    type: String,
     required: true,
   },
   ATCD: [

@@ -5,11 +5,12 @@ const SuivieSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "patient",
   },
-  infermier: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "infermier",
-  },
+
   dateSuivie: {
+    type: String,
+    required: true,
+  },
+  heureSuivie: {
     type: String,
     required: true,
   },

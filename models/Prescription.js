@@ -5,7 +5,7 @@ const PrescriptionSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "patient",
   },
-  infermier: {
+  medecin: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "infermier",
   },
@@ -13,10 +13,12 @@ const PrescriptionSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  traitement: {
-    type: Array,
-    default: [],
-  },
+  traitement: [
+    {
+      type: Object,
+      default: [],
+    },
+  ],
   date: {
     type: Date,
     default: Date.now,
