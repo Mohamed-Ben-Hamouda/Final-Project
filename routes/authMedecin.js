@@ -42,9 +42,7 @@ router.post(
       .then((medecin) => {
         if (!medecin) {
           // Check is user exists
-          return res
-            .status(400)
-            .json({ msg: "SVP faite votre enregistrement avant!!!!!" });
+          return res.status(400).json({ msg: "Please register Before" });
         } else {
           // Compare Password
           bcrypt.compare(password, medecin.password, (err, isMatch) => {
@@ -67,7 +65,7 @@ router.post(
                 }
               );
             } else {
-              return res.status(400).json({ msg: "Password incorrecte" });
+              return res.status(400).json({ msg: "Wrong Password" });
             }
           });
         }

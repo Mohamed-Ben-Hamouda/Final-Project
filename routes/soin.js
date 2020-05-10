@@ -54,30 +54,30 @@ router.post(
   }
 );
 
-// router.put("/:id", authInfermier, (req, res) => {
-//   const { dateSoin, traitementSoin } = req.body;
-//   //build a soin object
-//   let soinFilds = {};
-//   if (dateSoin) soinFilds.dateSoin = dateSoin;
-//   if (traitementSoin) soinFilds.traitementSoin = traitementSoin;
-//   Soin.findById(req.params.id)
-//     .then((soin) => {
-//       console.log(soin);
-//       if (!soin) {
-//         return res.json({ msg: "traitement de soin introuvable" });
-//         // } else if (soin.infermier.toString() !== req.infermier.id) {
-//         //   res.json({ msg: "not autorized" });
-//       } else {
-//         Soin.findByIdAndUpdate(
-//           req.params.id,
-//           { $set: soinFilds },
-//           (err, data) => {
-//             res.json({ msg: "soin Modifier" });
-//           }
-//         );
-//       }
-//     })
-//     .catch((err) => console.log(err.message));
-// });
+router.put("/:id", authInfermier, (req, res) => {
+  const { dateSoin, traitementSoin } = req.body;
+  //build a soin object
+  let soinFilds = {};
+  if (dateSoin) soinFilds.dateSoin = dateSoin;
+  if (traitementSoin) soinFilds.traitementSoin = traitementSoin;
+  Soin.findById(req.params.id)
+    .then((soin) => {
+      console.log(soin);
+      if (!soin) {
+        return res.json({ msg: "traitement de soin introuvable" });
+        // } else if (soin.infermier.toString() !== req.infermier.id) {
+        //   res.json({ msg: "not autorized" });
+      } else {
+        Soin.findByIdAndUpdate(
+          req.params.id,
+          { $set: soinFilds },
+          (err, data) => {
+            res.json({ msg: "soin Modifier" });
+          }
+        );
+      }
+    })
+    .catch((err) => console.log(err.message));
+});
 
 module.exports = router;

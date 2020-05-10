@@ -153,28 +153,34 @@ router.get("/infermier/:id", authInfermier, (req, res) => {
       console.error(err.message);
     });
 });
-
-//get les soins d'un patient
-router.get("/soin/:patientId", (req, res) => {
+//get tous les donnés d'un patient
+router.get("/:patientId", (req, res) => {
   Patient.findById(req.params.patientId)
-    .populate("soin")
-    .then((patient) => res.json(patient.soin))
+    .then((patient) => res.json(patient))
     .catch((err) => console.error(err.message));
 });
 
-//get les suivies d'un patient
-router.get("/suivie/:patientId", (req, res) => {
-  Patient.findById(req.params.patientId)
-    .populate("suivie")
-    .then((patient) => res.json(patient.suivie))
-    .catch((err) => console.error(err.message));
-});
+// //get les soins d'un patient
+// router.get("/soin/:patientId", (req, res) => {
+//   Patient.findById(req.params.patientId)
+//     .populate("soin")
+//     .then((patient) => res.json(patient.soin))
+//     .catch((err) => console.error(err.message));
+// });
 
-//get les covidtest d'un patient
-router.get("/covidTest/:patientId", (req, res) => {
-  Patient.findById(req.params.patientId)
-    .populate("covidTest")
-    .then((patient) => res.json(patient.covidTest))
-    .catch((err) => console.error(err.message));
-});
+// //get les suivies d'un patient
+// router.get("/suivie/:patientId", (req, res) => {
+//   Patient.findById(req.params.patientId)
+//     .populate("suivie")
+//     .then((patient) => res.json(patient.suivie))
+//     .catch((err) => console.error(err.message));
+// });
+
+// //get les covidtest d'un patient
+// router.get("/covidTest/:patientId", (req, res) => {
+//   Patient.findById(req.params.patientId)
+//     .populate("covidTest")
+//     .then((patient) => res.json(patient.covidTest))
+//     .catch((err) => console.error(err.message));
+// });
 module.exports = router;

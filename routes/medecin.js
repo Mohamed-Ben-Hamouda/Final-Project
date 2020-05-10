@@ -3,16 +3,18 @@ const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const authMedecin = require("../middleware/authMedecin");
 const Medecin = require("../models/Medecin");
-
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const jwtSecret = "secret";
 // enregistrement du Medecin
 router.post(
-  "/medecin",
+  "/",
   [
     check("nom", "SVP taper le nom du patient").not().isEmpty(),
     check("prenom", "SVP taper le prenom du patient").not().isEmpty(),
     check("email", "SVP taper le mail du patient").isEmail(),
     check("phone", "SVP taper le num du tel du patient").not().isEmpty(),
-    check("matricule", "immatrucule dois etre 9 characters")
+    check("matricule", "matrucule dois etre 9 characters")
       .not()
       .isEmpty()
       .isLength({ max: 9 }),
@@ -31,9 +33,9 @@ router.post(
     Medecin.findOne({ matricule })
       .then((medecin) => {
         if (medecin) {
-          res.status(400).json({ msg: "Medecin dejat exists!!" });
+          res.status(400).json({ msg: "Medecin deja exist!!" });
         } else {
-          Medecin = new Medecin({
+          medecin = new Medecin({
             nom,
             prenom,
             email,
@@ -67,12 +69,12 @@ router.post(
 
       .catch((err) => {
         console.error(err.message);
-        res.status(500).send("erreure du serveur");
+        res.status(500).send("erreur du serveur");
       });
   }
 );
 //get all Medecin
-router.get("/medecin", authMedecin, (req, res) => {
+router.get("/", authMedecin, (req, res) => {
   Medecin.find()
     .sort({ date: -1 })
     .then((medecin) => res.json(medecin))
