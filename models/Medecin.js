@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 
 const MedecinSchema = mongoose.Schema({
-  infermier: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "infermier",
-  },
+  infermier: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "infermier",
+    },
+  ],
 
   nom: {
     type: String,

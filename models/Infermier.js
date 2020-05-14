@@ -7,6 +7,10 @@ const InfirmierSchema = mongoose.Schema({
       ref: "patient",
     },
   ],
+  medecin: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "patient",
+  },
 
   nom: {
     type: String,

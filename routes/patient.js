@@ -22,8 +22,9 @@ router.post(
       check("cin", "SVP taper le num du cin du patient")
         .not()
         .isEmpty()
-        .isLength({ max: 8 }),
-      check("origin", "SVP enter lorigine de la maladie").not().isEmpty(),
+        .isLength({ max: 8, min: 8 }),
+      check("origin", "SVP enter l'origine de la maladie").not().isEmpty(),
+      check("image", "SVP enter l'image de patient").not().isEmpty(),
       check("numChambre", "SVP enter le numero de Chambre du patient ")
         .not()
         .isEmpty(),
@@ -48,6 +49,7 @@ router.post(
       numChambre,
       numLit,
       etat,
+      image,
       ATCD,
     } = req.body;
 
@@ -67,6 +69,7 @@ router.post(
             numChambre,
             numLit,
             etat,
+            image,
             ATCD,
             infermier: req.infermier.id,
           });
@@ -87,7 +90,7 @@ router.post(
 );
 // Update patient
 // Private Route
-router.put("/infermier/:id", authInfermier, (req, res) => {
+router.put("/:id", authInfermier, (req, res) => {
   const {
     nom,
     prenom,
@@ -99,6 +102,7 @@ router.put("/infermier/:id", authInfermier, (req, res) => {
     numChambre,
     numLit,
     etat,
+    image,
     ATCD,
   } = req.body;
 
@@ -114,6 +118,7 @@ router.put("/infermier/:id", authInfermier, (req, res) => {
   if (numChambre) patientFields.numChambre = numChambre;
   if (numLit) patientFields.numLit = numLit;
   if (etat) patientFields.etat = etat;
+  if (iage) patientFields.image = image;
   if (ATCD) patientFields.ATCD = ATCD;
 
   Patient.findById(req.params.id)
@@ -136,7 +141,7 @@ router.put("/infermier/:id", authInfermier, (req, res) => {
     });
 });
 //get all patient
-router.get("/infermier", authInfermier, (req, res) => {
+router.get("/", authInfermier, (req, res) => {
   Patient.find()
     .sort({ date: -1 })
     .then((patient) => res.json(patient))
@@ -146,12 +151,22 @@ router.get("/infermier", authInfermier, (req, res) => {
     });
 });
 //get one patient
-router.get("/infermier/:id", authInfermier, (req, res) => {
-  Patient.findById(req.params.id)
+// router.get("/:id", authInfermier, (req, res) => {
+//   Patient.findById(req.params.id)
+//     .then((patient) => res.json(patient))
+//     .catch((err) => {
+//       console.error(err.message);
+//     });
+// });
+router.get("/getPatients", authInfermier, (req, res) => {
+  // if (mongoose.Types.ObjectId.isValid(req.infermier._id)) {
+  console.log(req.infermier);
+  Patient.find({ infermier: req.infermier.id })
     .then((patient) => res.json(patient))
     .catch((err) => {
       console.error(err.message);
     });
+  // } else console.log("problem");
 });
 //get tous les donnés d'un patient
 router.get("/:patientId", (req, res) => {

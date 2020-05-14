@@ -1,0 +1,85 @@
+import {
+  GET_PATIENT,
+  GET_PATIENT_INF,
+  ADD_PATIENT,
+  UPDATE_PATIENT,
+  SAVE_PATIENT,
+  CLEAR_PATIENT,
+  PATIENT_ERROR,
+  REMOVE_CURRENT_PATIENT,
+} from "./types";
+import axios from "axios";
+
+// Get patient
+export const getPatient = () => (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  axios
+    .get("/api/patient", config)
+    .then((res) =>
+      dispatch({
+        type: GET_PATIENT,
+        payload: res.data,
+      })
+    )
+    .catch((err) =>
+      dispatch({
+        type: PATIENT_ERROR,
+        payload: err.response.msg,
+      })
+    );
+};
+
+export const getPatientinf = () => (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  axios
+    .get("/api/patient/getPatients", config)
+    .then((res) =>
+      dispatch({
+        type: GET_PATIENT_INF,
+        payload: res.data,
+      })
+    )
+    .catch((err) =>
+      dispatch({
+        type: PATIENT_ERROR,
+        payload: err.response.data.msg,
+      })
+    );
+};
+
+// Add patient
+export const addPatient = (newPatient) => (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  axios
+    .post("/api/patient", newPatient, config)
+    .then((res) =>
+      dispatch({
+        type: ADD_PATIENT,
+        payload: res.data,
+      })
+    )
+    .catch((err) =>
+      dispatch({
+        type: PATIENT_ERROR,
+        payload: err.response.data.msg,
+      })
+    );
+};
+
+export const clearPatient = () => (dispatch) => {
+  dispatch({
+    type: CLEAR_PATIENT,
+  });
+};

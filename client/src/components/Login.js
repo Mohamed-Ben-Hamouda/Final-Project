@@ -48,15 +48,12 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated && this.state.poste === "Medecin") {
-      this.props.history.push("/homeMedecin");
+      this.props.history.push("/HomeMedecin");
     }
-    if (nextProps.auth.isAuthenticated && this.state.poste === "Infermier") {
-      this.props.history.push("/home");
+    if (nextProps.auth.token && this.state.poste === "Infermier") {
+      this.props.history.push("/HomeInfermier");
     }
-    if (
-      nextProps.auth.error === "Please register Before" ||
-      nextProps.auth.error === "Wrong Password"
-    ) {
+    if (nextProps.auth.error) {
       let id = uuidv4();
       this.props.setAlert(nextProps.auth.error, "danger", id);
       setTimeout(() => {
@@ -65,6 +62,11 @@ class Login extends Component {
       }, 5000);
     }
   }
+  // componentDidMount() {
+  //   if (this.props.auth.token) {
+  //     this.props.history.push("/HomeInfermier");
+  //   }
+  // }
 
   render() {
     return (

@@ -62,21 +62,19 @@ export const loginInfermier = (formData) => (dispatch) => {
       "Content-Type": "application/json",
     },
   };
-  axios
-    .post("/api/authInfermier", formData, config)
-    .then((res) => {
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: res.data,
-      });
-      dispatch(loadInfermier());
-    })
-    .catch((err) =>
-      dispatch({
-        type: LOGIN_FAIL,
-        payload: err.response.data.msg,
-      })
-    );
+  axios.post("/api/authInfermier", formData, config).then((res) => {
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data,
+    });
+    dispatch(loadInfermier());
+  });
+  // .catch((err) =>
+  //   dispatch({
+  //     type: LOGIN_FAIL,
+  //     payload: err.response.data.msg,
+  //   })
+  // );
 };
 
 //load medecin

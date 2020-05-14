@@ -6,7 +6,7 @@ const ChefServise = require("../models/ChefService");
 
 // enregistrement du chef service
 router.post(
-  "/chef",
+  "/",
 
   [
     check("nom", "SVP taper le nom du patient").not().isEmpty(),

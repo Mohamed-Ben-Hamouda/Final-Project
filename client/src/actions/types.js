@@ -11,3 +11,14 @@ export const LOGOUT = "LOGOUT";
 //Alert action
 export const SET_ALERT = "SET_ALERT";
 export const REMOVE_ALERT = "REMOVE_ALERT";
+
+// Patient action
+export const GET_PATIENT = "GET_PATIENT";
+export const GET_PATIENT_INF = " GET_PATIENT_INF";
+export const ADD_PATIENT = "ADD_PATIENTPATIENT";
+export const DELETE_PATIENT = "DELETE_PATIENT";
+export const UPDATE_PATIENT = "UPDATE_PATIENT";
+export const SAVE_PATIENT = "SAVE_PATIENT";
+export const CLEAR_PATIENT = "CLEAR_PATIENT";
+export const PATIENT_ERROR = "MUSIC_PATIENT";
+export const REMOVE_CURRENT_PATIENT = "REMOVE_CURRENT_PATIENT";

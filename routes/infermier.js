@@ -4,7 +4,7 @@ const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const jwtSecret = "secret";
-const authInferier = require("../middleware/authInfermier");
+const authInfermier = require("../middleware/authInfermier");
 
 const Infermier = require("../models/Infermier");
 
@@ -63,7 +63,7 @@ router.post(
                 { expiresIn: 3600000 },
                 (err, token) => {
                   if (err) throw err;
-                  res.json({ token });
+                  res.json(token);
                   // console.log(token);
                 }
               );
@@ -78,7 +78,7 @@ router.post(
   }
 );
 //get all infermier
-router.get("/infermier", authInferier, (req, res) => {
+router.get("/infermier", authInfermier, (req, res) => {
   Infermier.find()
     .sort({ date: -1 })
     .then((infermier) => res.json(infermier))
@@ -88,7 +88,7 @@ router.get("/infermier", authInferier, (req, res) => {
     });
 });
 //get one infermier
-router.get("/:id", authInferier, (req, res) => {
+router.get("/:id", authInfermier, (req, res) => {
   Infermier.findById(req.params.id)
     .then((infermier) => res.json(infermier))
     .catch((err) => {
@@ -97,8 +97,9 @@ router.get("/:id", authInferier, (req, res) => {
 });
 
 //get les patients d'infermier
-router.get("/patient/:infermierId", (req, res) => {
-  Infermier.findById(req.params.infermierId)
+router.get("/patientInf", authInfermier, (req, res) => {
+  console.log(req.infermier);
+  Infermier.findById(req.infermier.id)
     .populate("patient")
     .then((infermier) => res.json(infermier.patient))
     .catch((err) => console.error(err.message));
