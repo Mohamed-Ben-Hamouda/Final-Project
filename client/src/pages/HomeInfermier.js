@@ -41,8 +41,8 @@ class HomeInfermier extends Component {
             {" "}
             <Breadcrumb style={{ margin: "16px 0" }}>
               <Breadcrumb.Item>
-                Bien Venu M/Mme{this.props.auth.user.nom}{" "}
-                {this.props.auth.user.prenom}
+                {/* Bien Venu M/Mme{this.props.auth.user.nom}{" "} */}
+                {/* {this.props.auth.user.prenom} */}
               </Breadcrumb.Item>
             </Breadcrumb>
             <div

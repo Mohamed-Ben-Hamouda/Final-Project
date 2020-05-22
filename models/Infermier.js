@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const InfirmierSchema = mongoose.Schema({
+const InfermierSchema = mongoose.Schema({
   patient: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -43,4 +43,4 @@ const InfirmierSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("infirmier", InfirmierSchema);
+module.exports = mongoose.model("infermier", InfermierSchema);

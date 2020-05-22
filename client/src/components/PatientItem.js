@@ -1,5 +1,5 @@
 import React from "react";
-import { AuditOutlined, UserAddOutlined } from "@ant-design/icons";
+import { AuditOutlined } from "@ant-design/icons";
 import { Layout, Menu, Breadcrumb } from "antd";
 import { Card } from "antd";
 import Icon from "@ant-design/icons";
@@ -10,12 +10,18 @@ const { Header, Content, Footer } = Layout;
 
 const PatientItem = ({ data }) => {
   return (
-    <div className="d-flex">
+    <div className="d-flex card">
       {data && (
         <Card
           hoverable
-          style={{ width: 240 }}
-          cover={<img alt="example" src={data.image} />}
+          style={{ width: 200 }}
+          cover={
+            <img
+              style={{ width: 200, height: 250 }}
+              alt="example"
+              src={data.image}
+            />
+          }
         >
           <Meta title={data.nom} />
           <h4>{data.prenom}</h4>

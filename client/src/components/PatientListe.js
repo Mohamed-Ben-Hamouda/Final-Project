@@ -2,7 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { getPatientinf } from "../actions/PatientAction";
 import { loadInfermier } from "../actions/AuthAction";
-import { UserAddOutlined } from "@ant-design/icons";
+
+import ModalPatient from "./ModalPatient";
 import PatientItem from "./PatientItem";
 
 class PatientList extends React.Component {
@@ -19,7 +20,7 @@ class PatientList extends React.Component {
             this.props.auth.user.patient.map((el) => <PatientItem data={el} />)}
         </div>
         <div>
-          <UserAddOutlined style={{ fontSize: "40px", color: "#87B4E4" }} />
+          <ModalPatient />
         </div>
       </div>
     );

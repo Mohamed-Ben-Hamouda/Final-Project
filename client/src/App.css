@@ -1,5 +1,7 @@
 @import "~antd/dist/antd.css";
-
+body {
+  font-family: Georgia, serif;
+}
 label {
   margin: 20px;
   font-style: italic;

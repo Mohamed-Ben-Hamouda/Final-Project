@@ -84,7 +84,7 @@ router.post(
       })
       .catch((err) => {
         console.error(err.message);
-        res.status(500).send("erreure du serveur");
+        res.status(500).send("erreur du serveur");
       });
   }
 );

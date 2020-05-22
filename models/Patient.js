@@ -29,10 +29,7 @@ const PatientSchema = mongoose.Schema({
       default: [],
     },
   ],
-  cin: {
-    type: Number,
-    required: true,
-  },
+
   nom: {
     type: String,
     required: true,

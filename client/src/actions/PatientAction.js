@@ -78,6 +78,33 @@ export const addPatient = (newPatient) => (dispatch) => {
     );
 };
 
+export const editPatient = (updatedPatient) => (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  axios
+    .put(`/api/patient/${updatedPatient._id}`, updatedPatient, config)
+    .then((res) =>
+      dispatch({
+        type: UPDATE_PATIENT,
+        payload: updatedPatient,
+      })
+    )
+    .catch((err) =>
+      dispatch({
+        type: PATIENT_ERROR,
+        payload: err.response.msg,
+      })
+    );
+};
+export const savePatient = (patient) => (dispatch) => {
+  dispatch({
+    type: SAVE_PATIENT,
+    payload: patient,
+  });
+};
 export const clearPatient = () => (dispatch) => {
   dispatch({
     type: CLEAR_PATIENT,
