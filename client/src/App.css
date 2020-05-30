@@ -1,6 +1,9 @@
 .App {
   text-align: center;
 }
+.login {
+  /* font-family: "monotype"; */
+}
 
 .App-logo {
   height: 40vmin;
@@ -35,4 +38,25 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.paper {
+  /* margin-top: theme.spacing(8); */
+  margin-top: 10x;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.avatar {
+  /* margin: theme.spacing(1); */
+  background-color: #dc004e;
+}
+.form {
+  width: "100%";
+  margin-top: 10x;
+  /* margin-top: theme.spacing(1); */
+}
+.submit {
+  /* margin: theme.spacing(3, 0, 2); */
+  margin: 20px;
 }
