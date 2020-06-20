@@ -5,20 +5,17 @@ const CovidTestSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "patient",
   },
-  personel: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "patient",
-  },
+
   testName: {
     type: String,
     required: true,
   },
   dateTest: {
-    type: Date,
+    type: String,
     required: true,
   },
   resultat: {
-    type: Boolean,
+    type: String,
     required: true,
   },
   date: {

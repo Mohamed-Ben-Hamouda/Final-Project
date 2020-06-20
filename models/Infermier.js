@@ -1,13 +1,16 @@
 const mongoose = require("mongoose");
 
-const InfirmierSchema = mongoose.Schema({
+const InfermierSchema = mongoose.Schema({
   patient: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "patient",
     },
   ],
-
+  medecin: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "medecin",
+  },
   nom: {
     type: String,
     required: true,
@@ -28,6 +31,10 @@ const InfirmierSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  image: {
+    type: String,
+    required: true,
+  },
 
   phone: {
     type: Number,
@@ -39,4 +46,4 @@ const InfirmierSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("infirmier", InfirmierSchema);
+module.exports = mongoose.model("infermier", InfermierSchema);

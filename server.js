@@ -19,22 +19,16 @@ mongoose.connect(
 );
 
 // Define Routes
-<<<<<<< HEAD
-app.use('/api/chefServise', require('./routes/chefServise'))
-app.use('/api/patient', require('./routes/patient'))
-// app.use('/api/soin', require('./routes/soin'))
-// app.use('/api/auth', require('./routes/auth'))
-// app.use('/api/covidTest', require('./routes/covidTest'))
-// app.use('/api/suivie', require('./routes/suivie'))
-
-
-
-app.listen(4070, () => console.log('Server démmarrer sur le port 4070...'))
-=======
-app.use("/api/personel", require("./routes/personel"));
+app.use("/api/chefService", require("./routes/chefService"));
 app.use("/api/patient", require("./routes/patient"));
 app.use("/api/soin", require("./routes/soin"));
+app.use("/api/authChef", require("./routes/authChef"));
+app.use("/api/authInfermier", require("./routes/authInfermier"));
+app.use("/api/authMedecin", require("./routes/authMedecin"));
 app.use("/api/covidTest", require("./routes/covidTest"));
+app.use("/api/suivie", require("./routes/suivie"));
+app.use("/api/medecin", require("./routes/medecin"));
+app.use("/api/infermier", require("./routes/infermier"));
+app.use("/api/prescription", require("./routes/prescription"));
 
 app.listen(4070, () => console.log("Server démmarrer sur le port 4070..."));
->>>>>>> origin/Maryem-Branch

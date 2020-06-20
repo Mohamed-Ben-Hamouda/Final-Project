@@ -5,10 +5,7 @@ const SoinSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "patient",
   },
-  infermier: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "infermier",
-  },
+
   dateSoin: {
     type: String,
     required: true,

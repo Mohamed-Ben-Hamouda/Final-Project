@@ -1,38 +1,241 @@
-.App {
+ @import "~antd/dist/antd.css";
+.navbar{
+    width: 100%;
+ 
+ position: fixed;
+  display: flex;
+  flex-direction:row;
+  text-decoration: none;
+justify-content: space-around;
+
+margin-right: 20%;
+z-index: 9;
+padding: 20px;
+background-color: white;
+}
+.infoor{
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+  
+container-fluid{
+    background-color: orangered;
+   
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+#components-layout-demo-fixed .logo {
+    width: 120px;
+    height: 31px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 16px 24px 16px 0;
+    float: left;
   }
+  .site-layout .site-layout-background {
+    background: #fff;
+   
+  }
+  .ajout {
+    position: absolute;
+    right: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px;
+  }
+.mor{
+    padding-top: 8%;
+
+}
+#Login{
+    text-decoration:none;
+    font-family: initial;
+    font-size: xx-large;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.img3{
+  display: flex;
+  flex-direction: row;
+}
+
+.navbarcss{
+    width: 95%;
+    margin-left: -16%;
+    position: fixed;
+     display: flex;
+     flex-direction:row;
+     text-decoration: none;
+   justify-content: space-around;
+   
+
+   margin-right: 20%;
+   z-index: 9;
+   padding: 10px;
+   background-color: white;
+   
+   }
+   .navbarcss :hover{
+  color: #D86422;
+  
+  
+   }
+   .par1Med .part2Med{
+     text-size-adjust: 20px;
+     color: blue;
+   }
+
+   .logodocgroup{
+    width: 300px;
+  
+  }
+ 
+  .menu-items{
+    display: flex;
+    justify-content: space-between;
+    width: 18%;
+  }
+  .dropdown {
+  
+    display: none;
+    text-decoration: none;
+    list-style-type: none;
+    position: relative;
+  }
+  .ref:hover .dropdown {
+    display: block;
+    position: absolute;
+    text-decoration: none;
+    background-color: white;
+  }
+ 
+legend {
+    background-color:#1890ff;
+    color: #fff;
+    padding: 3px 6px;
+}
+.singer-img{
+  width: 150px;
+}
+.fav-item{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin: 10px 0;
+  text-align: center;
+   overflow: hidden; 
+  background: #1890ff;
+  color: antiquewhite;
 }
-
-.App-link {
-  color: #61dafb;
+.modif{
+  margin-left: 33%;
 }
+.imgg{
+  margin-left: 109%;
+    border-radius: 80%;
+} 
+h7{
+  padding-left: 6%;
+}
+#outlined-basic{
+  padding: 10%;
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+}
+.inf{
+  display: flex;
+}
+.list{
+  
+  width: 100%;
+  
+}
+.Bo{
+  margin-top: 17%;
+  border-radius: 100%;
+  margin-left:20%;
+
+}
+.footer{
+    background-color:#1890ff;
+    color: #fff;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    /* espacement au milieu */
+    width: 100%;
+    margin: 0px auto;
+    padding: 1%;
+}
+.footer p:hover{
+  color: #D86422;
+  cursor: grab;
+  
+}
+.cor{
+color: black;
+}
+h4{
+  color: antiquewhite;
+}
+.atcd {
+  overflow-wrap: break-word;
+  word-spacing: 10px;
+}
+.patient {
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+}
+.radio {
+  margin: 10px;
+}
+.input {
+  display: flex;
+  margin: 20px 20px;
+  align-items: center;
+  padding-left: 100px;
+  /* align-content: center; */
+}
+.forum {
+  align-content: center;
+}
+.ajout {
+  position: absolute;
+  right: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.cadd {
+  border: 15px solid;
+  border-radius: 5%;
+  border-color: #F5F5F5;
+}
+.data {
+  display: flex;
+  flex-direction: row;
+}
+.data h5 {
+  color: #1890FF;
+}
+.data h6 {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 23px;
+}
+.fooo{
+    
+
+    font-family: Arial,Helvetica,sans-serif;
+    background-color:black;
+    color: blanchedalmond;
+    text-align: center;
+} 
+
+.formo{
+  display: flex;
+  flex-direction: column;
+justify-content: space-between;
+  position: fixed; 
 }

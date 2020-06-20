@@ -1,24 +1,20 @@
 const express = require("express");
 const router = express.Router();
+const { check, validationResult } = require("express-validator");
 const CovidTest = require("../models/CovidTest");
 const Patient = require("../models/Patient");
-<<<<<<< HEAD
-const auth = require("../middleware/auth")
-const { check } = require('express-validator')
-
-
-router.post("/:patientId", [auth,
-  [
-    check("dateTest", "Veuillez sélectionner votre date").not().isEmpty(),
-    check("resultat", "Veuillez crochez le resultat di Test").not().isEmpty(),
-    check("testName", "Veuillez saisir Le nom du test ").not().isEmpty(),
-  ]], (req, res) => {
-    const { title, body } = req.body;
-=======
+const authInfermier = require("../middleware/authInfermier");
+//private router
+router.get("/:id", authInfermier, (req, res) => {
+  CovidTest.find({ patient: req.params.id })
+    .sort({ date: -1 })
+    .then((resultat) => res.json(resultat))
+    .catch((err) => console.log(err.message));
+});
 router.post(
-  "/patient/:patientId",
+  "/:id",
   [
-    auth,
+    authInfermier,
     [
       check("dateTest", "Veuillez sélectionner votre date").not().isEmpty(),
       check("resultat", "Veuillez crochez le resultat di Test").not().isEmpty(),
@@ -26,51 +22,37 @@ router.post(
     ],
   ],
   (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.json({ errors: errors.array() });
+    }
     const { testName, resultat, dateTest } = req.body;
->>>>>>> origin/Maryem-Branch
-    let newCovidTest = new CovidTest({
+    covidTest = new CovidTest({
       testName,
       resultat,
       dateTest,
+      patient: req.params.id,
     });
-<<<<<<< HEAD
-    //
-=======
-    //get personel by id
->>>>>>> origin/Maryem-Branch
-    Patient.findById(req.params.patientId)
-      .then((patient) => {
-        patient.covidTest.puch(newCovidTest);
-        newCovidTest.patient = patient;
-        newCovidTest.save();
-        patient
-          .save()
-          .then(() => res.json({ msg: "Test Covid Ajouter" }))
-          .catch((err) => console.error(err.message));
-      })
+    covidTest
+      .save()
+      .then((data) => res.json(data))
       .catch((err) => console.error(err.message));
   }
 );
-
-router.put("/patient/:id", auth, (req, res) => {
+router.put("/:id", authInfermier, (req, res) => {
   const { testName, resultat, dateTest } = req.body;
-  //build a soin object
   let covidFilds = { testName, resultat, dateTest };
   if (testName) covidFilds.testName = testName;
   if (resultat) covidFilds.resultat = resultat;
   if (dateTest) covidFilds.dateTest = dateTest;
-
   CovidTest.findById(req.params.id)
     .then((testName) => {
       if (!testName) {
         return res.json({ msg: "Covid test introuvable" });
-      } else if (covidTest.patient.toString() !== req.patient.id) {
-        //params
-        res.json({ msg: "not autorized" });
       } else {
-        Soin.findByIdAndUpdate(
+        CovidTest.findByIdAndUpdate(
           req.params.id,
-          { $set: covidFilds },
+          { $set: { ...covidFilds } },
           (err, data) => {
             res.json({ msg: "Covid Test Modifier" });
           }
@@ -79,3 +61,4 @@ router.put("/patient/:id", auth, (req, res) => {
     })
     .catch((err) => console.log(err.message));
 });
+module.exports = router;

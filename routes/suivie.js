@@ -1,30 +1,28 @@
 const express = require("express");
 const router = express.Router();
-const auth = require("../middleware/authChef");
+const authInfermier = require("../middleware/authInfermier");
 const { check, validationResult } = require("express-validator");
 const Patient = require("../models/Patient");
 const Suivie = require("../models/Suivie");
 
 // Get suivie
 // Private Route
-router.get("/patient", auth, (req, res) => {
-  Suivie.find({ patient: req.patient.id })
+router.get("/:id", authInfermier, (req, res) => {
+  Suivie.find({ patient: req.params.id })
     .sort({ date: -1 })
-    .then((songs) => res.json(songs))
-    .catch((err) => {
-      console.error(err.message);
-      res.status(500).send("erreur du serveur");
-    });
+    .then((dateSuivie) => res.json(dateSuivie))
+    .catch((err) => console.log(err.message));
 });
 
 // Add music
 // Private Route
 router.post(
-  "/patient",
+  "/:id",
   [
-    auth,
+    authInfermier,
     [
-      check("date", "date est obligatoire").not().isEmpty().isDate(),
+      check("dateSuivie", "date est obligatoire").not().isEmpty(),
+      check("heureSuivie", "l'heure est obligatoire").not().isEmpty(),
       check("temperature", " la temperature est obligatoire").not().isEmpty(),
       check("respiration", "la respiration est obligatoire").not().isEmpty(),
       check("pulsation", "la pulsation est obligatoire").not().isEmpty(),
@@ -36,27 +34,40 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { date, temperature, respiration, pulsation } = req.body;
-
-    const newSuivie = new Suivie({
-      date,
+    const {
+      dateSuivie,
+      heureSuivie,
       temperature,
       respiration,
       pulsation,
-      patient: req.patient.id,
-    });
+    } = req.body;
 
-    Patient.findById(patient.id)
+    suivie = new Suivie({
+      dateSuivie,
+      heureSuivie,
+      temperature,
+      respiration,
+      pulsation,
+      patient: req.params.id,
+    });
+    // suivie2 = new Suivie({
+    //   dateSuivie,
+    //   heureSuivie,
+    //   temperature,
+    //   respiration,
+    //   pulsation,
+    // });
+
+    Patient.findById(req.params.id)
       .then((patient) => {
-        patient.suivie.puch(newCovidTest);
-        suivie.patient = patient;
-        newSuivie.save();
+        patient.suivie.push(suivie2);
+        suivie.save();
         patient
           .save()
-          .then(() => res.json({ msg: "Suivi patient Ajouter" }))
+          .then(() => res.json({ msg: "Suivie patient Ajouter" }))
           .catch((err) => console.error(err.message));
       })
-      .then(() => res.json())
+      .then(() => res.json({ msg: "Suivie patient Ajouter" }))
       .catch((err) => {
         console.error(err.message);
         res.status(500).send("erreur du serveur");
@@ -66,7 +77,7 @@ router.post(
 
 // Update suivie
 // Private Route
-router.put("/patient/:id", auth, (req, res) => {
+router.put("/infemier/:id", authInfermier, (req, res) => {
   const { date, temperature, respiration, pulsation } = req.body;
 
   // Build an suivie object

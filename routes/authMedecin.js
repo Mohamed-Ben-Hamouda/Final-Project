@@ -13,6 +13,9 @@ const jwtSecret = "secret";
 // Private route
 router.get("/", authMedecin, (req, res) => {
   Medecin.findById(req.medecin.id)
+    .populate("infermier")
+    // .populate("patient")
+    // .populate("medecin")
     .then((medecin) => res.json(medecin))
     .catch((err) => {
       console.error(err.message);
