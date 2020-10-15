@@ -1,6 +1,5 @@
 import {
   GET_PATIENT,
-  GET_PATIENT_INF,
   ADD_PATIENT,
   UPDATE_PATIENT,
   SAVE_PATIENT,
@@ -29,28 +28,6 @@ export const getPatient = () => (dispatch) => {
       dispatch({
         type: PATIENT_ERROR,
         payload: err.response.msg,
-      })
-    );
-};
-
-export const getPatientinf = () => (dispatch) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-  axios
-    .get("/api/patient/getPatients", config)
-    .then((res) =>
-      dispatch({
-        type: GET_PATIENT_INF,
-        payload: res.data,
-      })
-    )
-    .catch((err) =>
-      dispatch({
-        type: PATIENT_ERROR,
-        payload: err.response.data.msg,
       })
     );
 };
@@ -108,5 +85,11 @@ export const savePatient = (patient) => (dispatch) => {
 export const clearPatient = () => (dispatch) => {
   dispatch({
     type: CLEAR_PATIENT,
+  });
+};
+
+export const removeCurrentPatient = () => (dispatch) => {
+  dispatch({
+    type: REMOVE_CURRENT_PATIENT,
   });
 };

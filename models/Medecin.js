@@ -7,7 +7,12 @@ const MedecinSchema = mongoose.Schema({
       ref: "infermier",
     },
   ],
-
+  patient: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "patient",
+    },
+  ],
   nom: {
     type: String,
     required: true,
@@ -28,9 +33,14 @@ const MedecinSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+
   phone: {
     type: Number,
     required: true,
+  },
+  image: {
+    type: Number,
+    required: false,
   },
   date: {
     type: Date,

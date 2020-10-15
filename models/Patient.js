@@ -5,31 +5,47 @@ const PatientSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "infermier",
   },
-  soin: [
-    {
-      type: Object,
-      default: [],
-    },
-  ],
+  soin: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "infermier",
+  },
+  suivie: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "infermier",
+  },
+  covidTest: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "infermier",
+  },
+
+  // soin: [
+  //   {
+  //     type: Object,
+  //     default: [],
+  //   },
+  // ],
   prescription: [
     {
       type: Object,
       default: [],
     },
   ],
-  suivie: [
-    {
-      type: Object,
-      default: [],
-    },
-  ],
-  covidTest: [
-    {
-      type: Object,
-      default: [],
-    },
-  ],
-
+  // suivie: [
+  //   {
+  //     type: Object,
+  //     default: [],
+  //   },
+  // ],
+  // covidTest: [
+  //   {
+  //     type: Object,
+  //     default: [],
+  //   },
+  // ],
+  cin: {
+    type: Number,
+    required: true,
+  },
   nom: {
     type: String,
     required: true,
@@ -47,10 +63,6 @@ const PatientSchema = mongoose.Schema({
     required: true,
   },
   phone: {
-    type: String,
-    required: true,
-  },
-  cin: {
     type: String,
     required: true,
   },
@@ -74,12 +86,10 @@ const PatientSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  ATCD: [
-    {
-      type: Object,
-      default: [],
-    },
-  ],
+  ATCD: {
+    type: Array,
+    required: false,
+  },
   date: {
     type: Date,
     default: Date.now,

@@ -13,6 +13,8 @@ const jwtSecret = "secret";
 // Private route
 router.get("/", authMedecin, (req, res) => {
   Medecin.findById(req.medecin.id)
+    .populate("infermier")
+    .populate("patient")
     .then((medecin) => res.json(medecin))
     .catch((err) => {
       console.error(err.message);
@@ -42,7 +44,9 @@ router.post(
       .then((medecin) => {
         if (!medecin) {
           // Check is user exists
-          return res.status(400).json({ msg: "Please register Before" });
+          return res
+            .status(400)
+            .json({ msg: "SVP faite votre enregistrement avant!!!!!" });
         } else {
           // Compare Password
           bcrypt.compare(password, medecin.password, (err, isMatch) => {
@@ -65,7 +69,7 @@ router.post(
                 }
               );
             } else {
-              return res.status(400).json({ msg: "Wrong Password" });
+              return res.status(400).json({ msg: "Password incorrecte" });
             }
           });
         }

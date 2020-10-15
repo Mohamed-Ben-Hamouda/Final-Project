@@ -35,24 +35,25 @@ router.post(
       traitementSoin,
       patient: req.params.id,
     });
-    soin2 = new Soin({
-      dateSoin,
-      traitementSoin,
-    });
 
-    Patient.findById(req.params.id)
-      .then((patient) => {
-        patient.soin.push(soin2);
-        soin.save();
-        patient
-          .save()
-          .then(() => res.json({ msg: "Soin Ajouter" }))
-          .catch((err) => console.error(err.message));
-      })
-      .then(() => res.json({ msg: "Soin Ajouter" }))
-      .catch((err) => console.log(err.message));
+    soin
+      .save()
+      .then((data) => res.json(data))
+      .catch((err) => console.error(err.message));
   }
 );
+
+// Patient.findById(req.params.id)
+//   .then((patient) => {
+//     patient.soin.push(soin);
+//     soin.save();
+//     patient
+//       .save()
+//       .then(() => res.json({ msg: "Soin Ajouter" }))
+//       .catch((err) => console.error(err.message));
+//   })
+//   .then(() => res.json({ msg: "Soin Ajouter" }))
+//   .catch((err) => console.log(err.message));
 
 router.put("/:id", authInfermier, (req, res) => {
   const { dateSoin, traitementSoin } = req.body;
@@ -62,15 +63,12 @@ router.put("/:id", authInfermier, (req, res) => {
   if (traitementSoin) soinFilds.traitementSoin = traitementSoin;
   Soin.findById(req.params.id)
     .then((soin) => {
-      console.log(soin);
       if (!soin) {
         return res.json({ msg: "traitement de soin introuvable" });
-        // } else if (soin.infermier.toString() !== req.infermier.id) {
-        //   res.json({ msg: "not autorized" });
       } else {
         Soin.findByIdAndUpdate(
           req.params.id,
-          { $set: soinFilds },
+          { $set: { ...soinFilds } },
           (err, data) => {
             res.json({ msg: "soin Modifier" });
           }

@@ -8,6 +8,10 @@ import {
   LOGOUT,
   REMOVE_ALERT,
   USER_LOADED,
+  UPDATE_INFERMIER,
+  DELETE_INFERMIER,
+  ADD_INFERMIER,
+  ADD_PATIENT,
 } from "../actions/types";
 
 const initialstate = {
@@ -15,6 +19,7 @@ const initialstate = {
   isAuthenticated: null,
   user: null,
   error: null,
+  patient: null,
 };
 
 const AuthReducer = (state = initialstate, action) => {
@@ -31,9 +36,9 @@ const AuthReducer = (state = initialstate, action) => {
       localStorage.setItem("token", action.payload.token);
       return {
         ...state,
-        ...action.payload, //{'token:nuhnnuhnuuhnu}
-        isAuthenticated: true,
+        ...action.payload,
         error: null,
+        isAuthenticated: true,
       };
     case LOGIN_FAIL:
     case LOGOUT:
@@ -45,14 +50,52 @@ const AuthReducer = (state = initialstate, action) => {
         token: null,
         user: null,
         isAuthenticated: false,
-        role: null,
+
         error: action.payload,
       };
+    case DELETE_INFERMIER:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          infermier: state.user.infermier.filter(
+            (el) => el._id !== action.payload
+          ),
+        },
+      };
+    case ADD_INFERMIER:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          infermier: state.user.infermier.concat(action.payload),
+        },
+      };
+    case ADD_PATIENT:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          patient: state.user.patient.concat(action.payload),
+        },
+      };
+
     case CLEAR_ERROR:
       return {
         ...state,
         error: null,
       };
+    case UPDATE_INFERMIER:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          infermier: state.user.infermier.map((el) =>
+            el._id === action.payload.id ? action.payload : el
+          ),
+        },
+      };
+
     default:
       return state;
   }

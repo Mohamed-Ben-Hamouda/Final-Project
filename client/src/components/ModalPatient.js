@@ -2,13 +2,16 @@ import React from "react";
 import { Form, Input, Button, Radio, Select, DatePicker } from "antd";
 import { Modal } from "antd";
 import { Checkbox, Row } from "antd";
-import { UserAddOutlined } from "@ant-design/icons";
+import TextField from "@material-ui/core/TextField";
+import { UserAddOutlined, EditOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import {
   addPatient,
-  clearPatient,
   editPatient,
+  clearPatient,
+  savePatient,
 } from "../actions/PatientAction";
+import { loadInfermier } from "../actions/AuthAction";
 class ModalPatient extends React.Component {
   constructor(props) {
     super(props);
@@ -22,8 +25,9 @@ class ModalPatient extends React.Component {
       cin: "",
       email: "",
       dateEn: "",
+      phone: "",
       image: "",
-      origine: "",
+      origin: "",
       numChambre: "",
       numLit: "",
       etat: "",
@@ -36,7 +40,6 @@ class ModalPatient extends React.Component {
   };
   handleChangeSelect = (value) => {
     this.setState({ etat: value });
-    // console.log(`selected ${value}`);
   };
 
   showModal = () => {
@@ -44,12 +47,12 @@ class ModalPatient extends React.Component {
       visible: true,
     });
   };
+
   onChange = (checkedValues) => {
     this.setState({ ATCD: checkedValues });
   };
-  onChangedate = (date, dateString) => {
+  onChangedate = (date, dateString, e) => {
     this.setState({ dateEn: dateString });
-    // console.log({ date, dateString });
   };
   handleOk = (e) => {
     this.setState({ loading: true });
@@ -58,45 +61,84 @@ class ModalPatient extends React.Component {
     }, 3000);
   };
   componentWillReceiveProps(nextProps) {
+    // this.props.patient &&
     this.setState(nextProps.save);
   }
   handleCancel = (e) => {
-    console.log(e);
+    // console.log(e);
     this.setState({
       visible: false,
+    });
+    this.props.clearPatient();
+    this.setState({
+      visible: false,
+      nom: "",
+      prenom: "",
+      cin: "",
+      email: "",
+      dateEn: "",
+      image: "",
+      origin: "",
+      phone: "",
+      numChambre: "",
+      numLit: "",
+      etat: "",
+      ATCD: [],
     });
   };
 
   onFormLayoutChange = ({ size }) => {
     this.state.setComponentSize = size;
   };
+  getPatient = () => {
+    this.setState({
+      visible: true,
+    });
+    this.props.patient
+      ? this.props.savePatient(this.props.patient)
+      : this.props.clearPatient();
+  };
 
   render() {
     return (
       <div>
-        <Button style={{ border: "0" }} onClick={this.showModal}>
-          <UserAddOutlined style={{ fontSize: "40px", color: "#87B4E4" }} />
-        </Button>
+        {this.props.patient ? (
+          <EditOutlined
+            onClick={this.getPatient}
+            style={{ fontSize: "40px", color: "#87B4E4" }}
+          />
+        ) : (
+          <UserAddOutlined
+            onClick={this.getPatient}
+            style={{ fontSize: "40px", color: "#87B4E4" }}
+          />
+        )}
+
         <Modal
-          title="Ajout Patient"
+          title={this.props.patient ? "Modifier Patient" : "Ajouter Patient"}
           visible={this.state.visible}
-          onOk={this.handleOk}
           onCancel={this.handleCancel}
           style={{ background: "#F6F8FA" }}
           footer={[
             <Button key="back" onClick={this.handleCancel}>
-              Return
+              Annuler
             </Button>,
             <Button
               type="primary"
+              onOk={this.handleOk}
               loading={this.state.loading}
               onClick={(e) => {
                 e.preventDefault();
                 if (this.props.save) {
                   this.props.editPatient(this.state);
                   this.props.clearPatient();
+                  this.props.loadInfermier();
+                  this.handleCancel();
                 } else {
                   this.props.addPatient(this.state);
+                  this.props.clearPatient();
+                  this.handleCancel();
+                  this.props.loadInfermier();
                 }
                 this.setState({
                   nom: "",
@@ -104,8 +146,9 @@ class ModalPatient extends React.Component {
                   cin: "",
                   email: "",
                   dateEn: "",
+                  phone: "",
                   image: "",
-                  origine: "",
+                  origin: "",
                   numChambre: "",
                   numLit: "",
                   etat: "",
@@ -113,7 +156,7 @@ class ModalPatient extends React.Component {
                 });
               }}
             >
-              {this.props.save ? "MODIFIER" : "AJOUTER"}
+              {this.props.save ? "MODIFIER " : "AJOUTER"}
             </Button>,
           ]}
         >
@@ -126,14 +169,14 @@ class ModalPatient extends React.Component {
               onValuesChange={this.onFormLayoutChange}
               size={this.componentSize}
             >
-              <Form.Item label="Form Size" name="size">
+              {/* <Form.Item label="Form Size" name="size">
                 <Radio.Group>
                   <Radio.Button value="small">Small</Radio.Button>
                   <Radio.Button value="middle">Middle</Radio.Button>
                   <Radio.Button value="large">Large</Radio.Button>
                 </Radio.Group>
                 <br />
-              </Form.Item>
+              </Form.Item> */}
 
               <Form.Item label="CIN" style={{ fontWeight: "bold" }}>
                 <Input
@@ -147,6 +190,7 @@ class ModalPatient extends React.Component {
                 <Input
                   onChange={this.handleChange}
                   name="nom"
+                  style={{ textTransform: "capitalize" }}
                   value={this.state.nom}
                 />
               </Form.Item>
@@ -156,10 +200,28 @@ class ModalPatient extends React.Component {
                   onChange={this.handleChange}
                   name="prenom"
                   value={this.state.prenom}
+                  style={{ textTransform: "capitalize" }}
                 />
               </Form.Item>
+              <Form.Item label="Date d'entrer" style={{ fontWeight: "bold" }}>
+                <TextField
+                  name="dateEn"
+                  type="date"
+                  style={{ fontWeight: "bold" }}
+                  value={this.state.dateEn}
+                  style={{
+                    width: "280px",
 
-              <Form.Item
+                    marginLeft: "0",
+                    marginBottom: "-33",
+                  }}
+                  variant="outlined"
+                  onChange={this.onChangedate}
+                  fullWidth
+                  autoComplete="Date d'entrer"
+                />
+              </Form.Item>
+              {/* <Form.Item
                 label="Date d'entrer"
                 name="dateEn"
                 style={{ fontWeight: "bold" }}
@@ -167,12 +229,11 @@ class ModalPatient extends React.Component {
                 <DatePicker
                   name="dateEn"
                   onChange={this.onChangedate}
-                  value={this.state.dateEn}
+                  defaultPanelValue={this.state.dateEn}
                 />
-              </Form.Item>
+              </Form.Item> */}
 
               <Form.Item
-                name="email"
                 label="Email"
                 rules={[{ type: "email" }]}
                 style={{ fontWeight: "bold" }}
@@ -199,6 +260,7 @@ class ModalPatient extends React.Component {
                   onChange={this.handleChange}
                   name="origin"
                   value={this.state.origin}
+                  style={{ textTransform: "capitalize" }}
                 />
               </Form.Item>
 
@@ -218,17 +280,26 @@ class ModalPatient extends React.Component {
                   />
                 </Form.Item>
               </div>
-              <Form.Item label="Etat Patient" style={{ fontWeight: "bold" }}>
-                <Select name="etat" onChange={this.handleChangeSelect}>
-                  <Select.Option value="Infecter">Infecter</Select.Option>
-                  <Select.Option value="Non Infecter">
+              <Form.Item
+                label="Etat Patient"
+                onChange={this.handleChange}
+                style={{ fontWeight: "bold" }}
+              >
+                <Select
+                  value={this.state.etat}
+                  onChange={this.handleChangeSelect}
+                >
+                  <Select.Option name="etat" value="Infecter">
+                    Infecter
+                  </Select.Option>
+                  <Select.Option name="etat" value="Non Infecter">
                     Non Infecter
                   </Select.Option>
                 </Select>
               </Form.Item>
               <Form.Item
-                name="image"
                 label="Image Patient"
+                onChange={this.handleChange}
                 style={{ fontWeight: "bold" }}
               >
                 <Input
@@ -243,29 +314,39 @@ class ModalPatient extends React.Component {
                   <Checkbox.Group
                     style={{ width: "100%", fontSize: "16px" }}
                     onChange={this.onChange}
-                    name="ATCD"
+                    value={this.state.ATCD}
                   >
                     <Row span={12}>
-                      <Checkbox value="Asmatique">Asmatique</Checkbox>
+                      <Checkbox name="ATCD" value="Asmatique">
+                        Asmatique
+                      </Checkbox>
                     </Row>
                     <Row span={12}>
-                      <Checkbox value="Cardiaque">Cardiaque</Checkbox>
+                      <Checkbox name="ATCD" value="Cardiaque">
+                        Cardiaque
+                      </Checkbox>
                     </Row>
                     <Row span={12}>
-                      <Checkbox value="Diabetique">Diabetique</Checkbox>
+                      <Checkbox name="ATCD" value="Diabetique">
+                        Diabetique
+                      </Checkbox>
                     </Row>
                     <Row span={12}>
-                      <Checkbox value="Hyertensif" onChange={this.handleChange}>
+                      <Checkbox
+                        name="ATCD"
+                        value="Hyertensif"
+                        onChange={this.handleChange}
+                      >
                         Hyertensif
                       </Checkbox>
                     </Row>
                     <Row span={12}>
-                      <Checkbox value="Inseficence renal">
+                      <Checkbox name="ATCD" value="insuffisance rénale">
                         Inseficence renal
                       </Checkbox>
                     </Row>
                     <Row span={12}>
-                      <Checkbox value="L'immunodéficience">
+                      <Checkbox name="ATCD" value="L'immunodéficience">
                         L'immunodéficience
                       </Checkbox>
                     </Row>
@@ -288,4 +369,6 @@ export default connect(mapStateToProps, {
   addPatient,
   editPatient,
   clearPatient,
+  savePatient,
+  loadInfermier,
 })(ModalPatient);

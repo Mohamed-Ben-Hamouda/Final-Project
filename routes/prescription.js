@@ -29,21 +29,18 @@ router.post(
     if (!errors.isEmpty()) {
       return res.json({ errors: errors.array() });
     }
-    const { datePrescrition, traitement } = req.body;
+    const { datePrescription, traitement, traitfait } = req.body;
     prescription = new Prescription({
-      datePrescrition,
+      datePrescription,
       traitement,
+      traitfait,
       medecin: req.medecin.id,
       patient: req.params.id,
     });
-    prescription2 = new Prescription({
-      datePrescrition,
-      traitement,
-      medecin: req.medecin.id,
-    });
+
     Patient.findById(req.params.id)
       .then((patient) => {
-        patient.prescription.push(prescription2);
+        patient.prescription.push(prescription);
         prescription.save();
         patient
           .save()

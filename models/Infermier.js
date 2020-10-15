@@ -9,9 +9,8 @@ const InfermierSchema = mongoose.Schema({
   ],
   medecin: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "patient",
+    ref: "medecin",
   },
-
   nom: {
     type: String,
     required: true,
@@ -29,6 +28,10 @@ const InfermierSchema = mongoose.Schema({
     required: true,
   },
   matricule: {
+    type: String,
+    required: true,
+  },
+  image: {
     type: String,
     required: true,
   },

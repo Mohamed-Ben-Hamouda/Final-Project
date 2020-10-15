@@ -28,11 +28,11 @@ const PatientReducer = (state = initialState, action) => {
         patient: action.payload,
       };
 
-    case ADD_PATIENT:
-      return {
-        ...state,
-        patient: [action.payload, ...state.patient],
-      };
+    // case ADD_PATIENT:
+    //   return {
+    //     ...state,
+    //     patient: [action.payload, ...state.patient],
+    //   };
 
     case SAVE_PATIENT:
       return {

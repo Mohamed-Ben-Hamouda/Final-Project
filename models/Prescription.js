@@ -9,7 +9,7 @@ const PrescriptionSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "infermier",
   },
-  datePrescrition: {
+  datePrescription: {
     type: String,
     required: true,
   },
@@ -19,6 +19,9 @@ const PrescriptionSchema = mongoose.Schema({
       default: [],
     },
   ],
+  traitfait: {
+    type: Boolean,
+  },
   date: {
     type: Date,
     default: Date.now,

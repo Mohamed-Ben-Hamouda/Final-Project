@@ -19,12 +19,14 @@ router.post(
         .not()
         .isEmpty()
         .isLength({ max: 8 }),
+      check("image", "SVP entrer le liens ver la pgoto du patient")
+        .not()
+        .isEmpty(),
       check("cin", "SVP taper le num du cin du patient")
         .not()
         .isEmpty()
-        .isLength({ max: 8, min: 8 }),
-      check("origin", "SVP enter l'origine de la maladie").not().isEmpty(),
-      check("image", "SVP enter l'image de patient").not().isEmpty(),
+        .isLength({ max: 8 }),
+      check("origin", "SVP enter lorigine de la maladie").not().isEmpty(),
       check("numChambre", "SVP enter le numero de Chambre du patient ")
         .not()
         .isEmpty(),
@@ -38,54 +40,59 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    console.log(req.body);
+
     const {
       nom,
       prenom,
       dateEn,
       email,
       phone,
+      image,
       cin,
       origin,
       numChambre,
       numLit,
       etat,
-      image,
       ATCD,
     } = req.body;
 
-    Patient.findOne({ cin })
-      .then((patient) => {
-        if (patient) {
-          res.status(400).json({ msg: "Patient exists!!" });
-        } else {
-          patient = new Patient({
-            nom,
-            prenom,
-            dateEn,
-            email,
-            phone,
-            cin,
-            origin,
-            numChambre,
-            numLit,
-            etat,
-            image,
-            ATCD,
-            infermier: req.infermier.id,
-          });
-          Infermier.findById(req.infermier.id).then((infermier) => {
-            infermier.patient.push(patient);
-            patient.infermier = infermier;
-            patient.save();
-            infermier.save();
-            res.status(400).json({ msg: "Patient ajouter!!" });
-          });
-        }
-      })
-      .catch((err) => {
-        console.error(err.message);
-        res.status(500).send("erreur du serveur");
-      });
+    Patient.findOne({ cin }).then((patient) => {
+      if (patient) {
+        res.status(400).json({ msg: "Patient exists!!" });
+      } else {
+        patient = new Patient({
+          nom,
+          prenom,
+          dateEn,
+          email,
+          phone,
+          image,
+          cin,
+          origin,
+          numChambre,
+          numLit,
+          etat,
+          ATCD,
+          infermier: req.infermier.id,
+        });
+        Infermier.findById(req.infermier.id).then((infermier) => {
+          infermier.patient.push(patient);
+          patient.infermier = infermier;
+          patient.save().then((data) => res.json(data));
+          infermier.save();
+        });
+      }
+    });
+
+    router.get("/:id", (req, res) => {
+      Patient.findById(req.params.id)
+        .then((patient) => res.json(patient))
+        .catch((err) => {
+          console.error(err.message);
+          res.status(500).send("erreure du serveur");
+        });
+    });
   }
 );
 // Update patient
@@ -97,12 +104,12 @@ router.put("/:id", authInfermier, (req, res) => {
     dateEn,
     email,
     phone,
+    image,
     cin,
     origin,
     numChambre,
     numLit,
     etat,
-    image,
     ATCD,
   } = req.body;
 
@@ -113,12 +120,12 @@ router.put("/:id", authInfermier, (req, res) => {
   if (dateEn) patientFields.dateEn = dateEn;
   if (email) patientFields.email = email;
   if (phone) patientFields.phone = phone;
+  if (image) patientFields.image = image;
   if (cin) patientFields.cin = cin;
   if (origin) patientFields.origin = origin;
   if (numChambre) patientFields.numChambre = numChambre;
   if (numLit) patientFields.numLit = numLit;
   if (etat) patientFields.etat = etat;
-  if (iage) patientFields.image = image;
   if (ATCD) patientFields.ATCD = ATCD;
 
   Patient.findById(req.params.id)
@@ -141,8 +148,9 @@ router.put("/:id", authInfermier, (req, res) => {
     });
 });
 //get all patient
-router.get("/", authInfermier, (req, res) => {
+router.get("/inf/:id", authInfermier, (req, res) => {
   Patient.find()
+    .populate("patient")
     .sort({ date: -1 })
     .then((patient) => res.json(patient))
     .catch((err) => {
@@ -151,23 +159,14 @@ router.get("/", authInfermier, (req, res) => {
     });
 });
 //get one patient
-// router.get("/:id", authInfermier, (req, res) => {
-//   Patient.findById(req.params.id)
-//     .then((patient) => res.json(patient))
-//     .catch((err) => {
-//       console.error(err.message);
-//     });
-// });
-router.get("/getPatients", authInfermier, (req, res) => {
-  // if (mongoose.Types.ObjectId.isValid(req.infermier._id)) {
-  console.log(req.infermier);
-  Patient.find({ infermier: req.infermier.id })
+router.get("/:id", authInfermier, (req, res) => {
+  Patient.findById(req.params.id)
     .then((patient) => res.json(patient))
     .catch((err) => {
       console.error(err.message);
     });
-  // } else console.log("problem");
 });
+
 //get tous les donnés d'un patient
 router.get("/:patientId", (req, res) => {
   Patient.findById(req.params.patientId)
@@ -175,7 +174,7 @@ router.get("/:patientId", (req, res) => {
     .catch((err) => console.error(err.message));
 });
 
-// //get les soins d'un patient
+// // get les soins d'un patient
 // router.get("/soin/:patientId", (req, res) => {
 //   Patient.findById(req.params.patientId)
 //     .populate("soin")
@@ -183,7 +182,7 @@ router.get("/:patientId", (req, res) => {
 //     .catch((err) => console.error(err.message));
 // });
 
-// //get les suivies d'un patient
+//get les suivies d'un patient
 // router.get("/suivie/:patientId", (req, res) => {
 //   Patient.findById(req.params.patientId)
 //     .populate("suivie")
@@ -191,7 +190,7 @@ router.get("/:patientId", (req, res) => {
 //     .catch((err) => console.error(err.message));
 // });
 
-// //get les covidtest d'un patient
+//get les covidtest d'un patient
 // router.get("/covidTest/:patientId", (req, res) => {
 //   Patient.findById(req.params.patientId)
 //     .populate("covidTest")

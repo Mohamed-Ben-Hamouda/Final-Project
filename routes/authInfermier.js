@@ -13,13 +13,16 @@ const jwtSecret = "secret";
 router.get("/", authInfermier, (req, res) => {
   Infermier.findById(req.infermier.id)
     .populate("patient")
+    // .populate("soin")
+    // .populate("suivie")
+    // .populate("covidTest")
     .then((infermier) => res.json(infermier))
     .catch((err) => {
       console.error(err.message);
       res.status(500).send("erreure du serveur");
     });
 });
-
+//login inf
 router.post(
   "/",
   [
@@ -27,7 +30,7 @@ router.post(
       .not()
       .isEmpty()
       .isLength({ max: 9 }),
-    check("password", "Password est necessaire!").not().isEmpty(),
+    check("password", "Password est obligatoire!").not().isEmpty(),
   ],
   (req, res) => {
     const errors = validationResult(req);
@@ -41,7 +44,13 @@ router.post(
       .then((infermier) => {
         if (!infermier) {
           // Check is user exists
-          return res.status(400).json({ msg: "Please register Before" });
+          return res
+            .status(400)
+            .json({ msg: "SVP faite votre enregistrement avant!!" });
+
+          // return res
+          //   .status(400)
+          //   .json({ msg: "SVP faite votre enregistrement avant!!!!!" });
         } else {
           // Compare Password
           bcrypt.compare(password, infermier.password, (err, isMatch) => {
@@ -64,14 +73,14 @@ router.post(
                 }
               );
             } else {
-              return res.status(400).json({ msg: "Wrong Password" });
+              return res.status(400).json({ msg: "Password incorrecte" });
             }
           });
         }
       })
       .catch((err) => {
         console.error(err.message);
-        res.status(500).send("erreure du serveur");
+        res.status(500).send("erreur du serveur");
       });
   }
 );

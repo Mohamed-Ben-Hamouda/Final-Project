@@ -3,18 +3,18 @@ const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const authMedecin = require("../middleware/authMedecin");
 const Medecin = require("../models/Medecin");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const jwtSecret = "secret";
+const Infermier = require("../models/Infermier");
+
 // enregistrement du Medecin
 router.post(
-  "/",
+  "/medecin",
   [
     check("nom", "SVP taper le nom du patient").not().isEmpty(),
     check("prenom", "SVP taper le prenom du patient").not().isEmpty(),
     check("email", "SVP taper le mail du patient").isEmail(),
     check("phone", "SVP taper le num du tel du patient").not().isEmpty(),
-    check("matricule", "matrucule dois etre 9 characters")
+    check("image", "SVP entre le lien ver votre phote").not().isEmpty(),
+    check("matricule", "immatrucule dois etre 9 characters")
       .not()
       .isEmpty()
       .isLength({ max: 9 }),
@@ -24,22 +24,23 @@ router.post(
       .isLength({ min: 6 }),
   ],
   (req, res) => {
-    const errors = validationResult(req);
+    var errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.json({ errors: errors.array() });
     }
-    const { nom, prenom, email, phone, matricule, password } = req.body;
+    var { nom, prenom, email, phone, image, matricule, password } = req.body;
 
     Medecin.findOne({ matricule })
       .then((medecin) => {
         if (medecin) {
-          res.status(400).json({ msg: "Medecin deja exist!!" });
+          res.status(400).json({ msg: "Medecin dejat exists!!" });
         } else {
-          medecin = new Medecin({
+          Medecin = new Medecin({
             nom,
             prenom,
             email,
             phone,
+            image,
             matricule,
             password,
           });
@@ -48,7 +49,7 @@ router.post(
               medecin.password = hashedPassword;
               medecin.save();
 
-              const payload = {
+              var payload = {
                 medecin: {
                   id: medecin.id,
                 },
@@ -69,12 +70,12 @@ router.post(
 
       .catch((err) => {
         console.error(err.message);
-        res.status(500).send("erreur du serveur");
+        res.status(500).send("errrrreure du serveur");
       });
   }
 );
 //get all Medecin
-router.get("/", authMedecin, (req, res) => {
+router.get("/medecin", authMedecin, (req, res) => {
   Medecin.find()
     .sort({ date: -1 })
     .then((medecin) => res.json(medecin))
@@ -89,6 +90,85 @@ router.get("/:id", (req, res) => {
     .then((medecin) => res.json(medecin))
     .catch((err) => {
       console.error(err.message);
+    });
+});
+
+//get LES infermier dun medecin
+router.get("/infermier/:id", authMedecin, (req, res) => {
+  Medecin.findById(req.params.id)
+    .populate("infermier")
+    .populate("patient")
+    .then((medecin) => res.json(medecin.infermier))
+    .catch((err) => console.error(err.message));
+});
+
+//get les patients du infermier du medecin
+router.get("/patient/:id", authMedecin, (req, res) => {
+  Medecin.findById(req.params.id)
+    .populate("patient")
+    .then((medecin) => res.json(medecin.patient))
+    .catch((err) => console.error(err.message));
+});
+// Update infermier
+// Private Route
+router.put("/medecin/:id", authMedecin, (req, res) => {
+  const { nom, prenom, email, phone, image, matricule, password } = req.body;
+
+  // Build infermier object
+  let infermierFields = {};
+  if (nom) infermierFields.nom = nom;
+  if (prenom) infermierFields.prenom = prenom;
+  if (email) infermierFields.email = email;
+  if (phone) infermierFields.phone = phone;
+  if (image) infermierFields.image = image;
+  if (matricule) infermierFields.matricule = matricule;
+  if (password) infermierFields.pasword = password;
+
+  Infermier.findById(req.params.id)
+    .then((infermier) => {
+      if (!infermier) {
+        return res.status(404).json({ msg: "infermier not found" });
+      } else {
+        Infermier.findByIdAndUpdate(
+          req.params.id,
+          { $set: infermierFields },
+          (err, data) => {
+            res.status(200).json({ msg: "infermier Updated!" });
+          }
+        );
+      }
+    })
+    .catch((err) => {
+      console.error(err.message);
+      res.status(500).send("Server error");
+    });
+});
+//del infermier
+// Private Route
+router.delete("/:id", authMedecin, (req, res) => {
+  Infermier.findById(req.params.id)
+    .then((infermier) => {
+      if (!infermier) {
+        return res.status(404).json({ msg: "infermier not found" });
+      } else {
+        Infermier.findByIdAndDelete(req.params.id, (err, data) => {
+          res.json({ msg: "infermier suprimer" });
+        });
+      }
+    })
+    .catch((err) => {
+      console.error(err.message);
+      res.status(500).send("Server error");
+    });
+});
+//get les patients d'infermier
+router.get("/patient/:infermierId", (req, res) => {
+  Infermier.findById(req.infermier.id)
+    .populate("patient")
+    .then((infermier) => res.json(infermier))
+    .catch((err) => {
+      console.error(err.message);
+      res.status(500).send("erreure du serveur");
     });
 });
 

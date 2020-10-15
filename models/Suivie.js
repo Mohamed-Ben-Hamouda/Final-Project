@@ -5,7 +5,10 @@ const SuivieSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "patient",
   },
-
+  // patient: {
+  //   type: String,
+  //   required: true,
+  // },
   dateSuivie: {
     type: String,
     required: true,

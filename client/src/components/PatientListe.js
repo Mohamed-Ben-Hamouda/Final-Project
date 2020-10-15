@@ -14,13 +14,14 @@ class PatientList extends React.Component {
 
   render() {
     return (
-      <div>
-        <div className="d-flex">
+      <div className="card cadd">
+        <div style={{ marginBottom: "20px" }}>
+          <ModalPatient />
+        </div>
+
+        <div className="d-flex flex-wrap fl">
           {this.props.auth.user &&
             this.props.auth.user.patient.map((el) => <PatientItem data={el} />)}
-        </div>
-        <div>
-          <ModalPatient />
         </div>
       </div>
     );
@@ -28,10 +29,7 @@ class PatientList extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    myPatient: state.patient,
     auth: state.auth,
   };
 };
-export default connect(mapStateToProps, { getPatientinf, loadInfermier })(
-  PatientList
-);
+export default connect(mapStateToProps, { loadInfermier })(PatientList);

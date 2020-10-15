@@ -35,53 +35,37 @@ router.post(
       dateTest,
       patient: req.params.id,
     });
-    covidTest2 = new CovidTest({
-      testName,
-      resultat,
-      dateTest,
-      patient: req.params.id,
-    });
 
-    Patient.findById(req.params.id)
-      .then((patient) => {
-        patient.covidTest.push(covidTest2);
-        covidTest.save();
-        patient
-          .save()
-          .then(() => res.json())
-          .catch((err) => console.error(err.message));
-      })
-      .then(() => res.json({ msg: "Test Covid Ajouter" }))
+    covidTest
+      .save()
+      .then((data) => res.json(data))
       .catch((err) => console.error(err.message));
   }
 );
 
-// router.put("/infermier/:id", authInferier, (req, res) => {
-//   const { testName, resultat, dateTest } = req.body;
-//   //build a soin object
-//   let covidFilds = { testName, resultat, dateTest };
-//   if (testName) covidFilds.testName = testName;
-//   if (resultat) covidFilds.resultat = resultat;
-//   if (dateTest) covidFilds.dateTest = dateTest;
+router.put("/:id", authInfermier, (req, res) => {
+  const { testName, resultat, dateTest } = req.body;
 
-//   CovidTest.findById(req.params.id)
-//     .then((testName) => {
-//       if (!testName) {
-//         return res.json({ msg: "Covid test introuvable" });
-//       } else if (covidTest.patient.toString() !== req.patient.id) {
-//         //params
-//         res.json({ msg: "not autorized" });
-//       } else {
-//         Soin.findByIdAndUpdate(
-//           req.params.id,
-//           { $set: covidFilds },
-//           (err, data) => {
-//             res.json({ msg: "Covid Test Modifier" });
-//           }
-//         );
-//       }
-//     })
-//     .catch((err) => console.log(err.message));
-// });
+  let covidFilds = { testName, resultat, dateTest };
+  if (testName) covidFilds.testName = testName;
+  if (resultat) covidFilds.resultat = resultat;
+  if (dateTest) covidFilds.dateTest = dateTest;
+
+  CovidTest.findById(req.params.id)
+    .then((testName) => {
+      if (!testName) {
+        return res.json({ msg: "Covid test introuvable" });
+      } else {
+        CovidTest.findByIdAndUpdate(
+          req.params.id,
+          { $set: { ...covidFilds } },
+          (err, data) => {
+            res.json({ msg: "Covid Test Modifier" });
+          }
+        );
+      }
+    })
+    .catch((err) => console.log(err.message));
+});
 
 module.exports = router;

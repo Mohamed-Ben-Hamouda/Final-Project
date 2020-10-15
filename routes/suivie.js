@@ -50,34 +50,17 @@ router.post(
       pulsation,
       patient: req.params.id,
     });
-    suivie2 = new Suivie({
-      dateSuivie,
-      heureSuivie,
-      temperature,
-      respiration,
-      pulsation,
-    });
 
-    Patient.findById(req.params.id)
-      .then((patient) => {
-        patient.suivie.push(suivie2);
-        suivie.save();
-        patient
-          .save()
-          .then(() => res.json({ msg: "Suivie patient Ajouter" }))
-          .catch((err) => console.error(err.message));
-      })
-      .then(() => res.json({ msg: "Suivie patient Ajouter" }))
-      .catch((err) => {
-        console.error(err.message);
-        res.status(500).send("erreur du serveur");
-      });
+    suivie
+      .save()
+      .then((data) => res.json(data))
+      .catch((err) => console.error(err.message));
   }
 );
 
 // Update suivie
 // Private Route
-router.put("/infemier/:id", authInfermier, (req, res) => {
+router.put("/:id", authInfermier, (req, res) => {
   const { date, temperature, respiration, pulsation } = req.body;
 
   // Build an suivie object
@@ -91,12 +74,10 @@ router.put("/infemier/:id", authInfermier, (req, res) => {
     .then((suivie) => {
       if (!suivie) {
         return res.status(404).json({ msg: "Suivie non trouver" });
-      } else if (suivie.patient.toString() !== req.user.id) {
-        res.status(401).json({ msg: "Non authoriser" });
       } else {
         Suivie.findByIdAndUpdate(
           req.params.id,
-          { $set: suivieFields },
+          { $set: { ...suivieFields } },
           (err, data) => {
             res.json({ msg: "Suivie Updated!" });
           }

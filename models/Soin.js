@@ -10,12 +10,10 @@ const SoinSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  traitementSoin: [
-    {
-      type: Object,
-      default: [],
-    },
-  ],
+  traitementSoin: {
+    type: String,
+    required: true,
+  },
   date: {
     type: Date,
     default: Date.now,
